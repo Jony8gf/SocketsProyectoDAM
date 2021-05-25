@@ -7,6 +7,7 @@ package proyectodamsocket;
 
 import drinkgamecad.DrinkgamesAD;
 import drinkgamecad.ExcepcionDG;
+import herramientas.Frase;
 import herramientas.Usuario;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -17,6 +18,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +32,8 @@ public class SesionServidor extends Thread {
     int ele = 0;
     String eleccion = "10";
     Usuario usuario = new Usuario();
+    Frase frase = new Frase();
+    ArrayList<Frase> frases = new ArrayList<>();
     ObjectInputStream ois = null;
     //InputStream is;
 
@@ -79,6 +83,28 @@ public class SesionServidor extends Thread {
                 case 1:
 
                     reg = dg.insertarUsuario(usuario);
+                    
+                    System.out.println(usuario.toString());
+                    
+                    usuario = dg.selectId(usuario.getCorreo());
+                    
+                    System.out.println(usuario.toString());
+                    
+                    frase.setDescripcion("Frase 3");
+                    frase.setTipo("YN");
+                    for(int i = 1; i<41; i++){
+
+                        frase.setDescripcion("Frase "+i);
+
+                        if(i<=20){
+                            frase.setTipo("MP");
+                            reg = dg.insertarFrasesUsuario(usuario, frase);
+                        }else{
+                            frase.setTipo("YN");
+                            reg = dg.insertarFrasesUsuario(usuario, frase);
+                            System.out.println("Registro Introducido");
+                        }
+                    }
                     System.out.println("Servidor.Consola - Objeto recibido del Cliente a Insertar: " + reg);
                     System.out.println(usuario.toString());
 
@@ -87,6 +113,11 @@ public class SesionServidor extends Thread {
                 case 2:
 
                     reg = dg.modificarUsuario(usuario);
+                    for(int i = 1; i<usuario.frases.size(); i++){
+
+                            reg = dg.modificarFrasesUsuario(usuario, i);
+                            System.out.println("Registro Modificado");                        
+                    }
                     System.out.println("Servidor.Consola - Objeto recibido del Cliente a Modifcar: " + reg);
                     System.out.println(usuario.toString());
 
@@ -94,6 +125,8 @@ public class SesionServidor extends Thread {
 
                 case 3:
 
+                    usuario = dg.selectId(usuario.getCorreo());
+                    reg = dg.eliminarFrasesDeUnUsuario(usuario);
                     reg = dg.eliminarUsuario(usuario.getCorreo());
                     System.out.println("Servidor.Consola - Objeto recibido del Cliente a Borrar: " + reg);
                     break;
@@ -101,6 +134,11 @@ public class SesionServidor extends Thread {
                 case 4:
 
                     usuario = dg.selectId(usuario.getCorreo());
+                    frases = dg.mostrarFrases(usuario);
+                    usuario.setFrases(frases);
+                    usuario.mostrarFrases();
+                    
+                    
                     System.out.println(usuario.toString());
                     
                     try {
