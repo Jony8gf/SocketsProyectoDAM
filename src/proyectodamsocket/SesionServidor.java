@@ -102,7 +102,7 @@ public class SesionServidor extends Thread {
                         }else{
                             frase.setTipo("YN");
                             reg = dg.insertarFrasesUsuario(usuario, frase);
-                            System.out.println("Registro Introducido");
+                            //System.out.println("Registro Introducido");
                         }
                     }
                     System.out.println("Servidor.Consola - Objeto recibido del Cliente a Insertar: " + reg);
@@ -113,10 +113,10 @@ public class SesionServidor extends Thread {
                 case 2:
 
                     reg = dg.modificarUsuario(usuario);
-                    for(int i = 1; i<usuario.frases.size(); i++){
+                    for(int i = 0; i<usuario.frases.size(); i++){
 
                             reg = dg.modificarFrasesUsuario(usuario, i);
-                            System.out.println("Registro Modificado");                        
+                            //System.out.println("Registro Modificado");                       
                     }
                     System.out.println("Servidor.Consola - Objeto recibido del Cliente a Modifcar: " + reg);
                     System.out.println(usuario.toString());
@@ -136,14 +136,12 @@ public class SesionServidor extends Thread {
                     usuario = dg.selectId(usuario.getCorreo());
                     frases = dg.mostrarFrases(usuario);
                     usuario.setFrases(frases);
-                    usuario.mostrarFrases();
-                    
-                    
+                    //usuario.mostrarFrases();
                     System.out.println(usuario.toString());
                     
                     try {
 
-                        Thread.sleep(1500);
+                        Thread.sleep(1000);
 
                     } catch (InterruptedException e) {
                     
