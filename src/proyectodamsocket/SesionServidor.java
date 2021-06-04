@@ -72,7 +72,8 @@ public class SesionServidor extends Thread {
         DrinkgamesAD dg = null;
         int reg = 0;
         try {
-            dg = new DrinkgamesAD();
+            dg = new DrinkgamesAD("192.168.1.12");
+            //dg.setIp();
         } catch (ExcepcionDG ex) {
             Logger.getLogger(SesionServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
