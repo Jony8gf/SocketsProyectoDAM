@@ -37,12 +37,15 @@ public class SesionServidor extends Thread {
     ObjectInputStream ois = null;
     //InputStream is;
 
+    //Constuctor Completo de la clase SesionServidor
     public SesionServidor(Socket clienteConectado) {
         this.clienteConectado = clienteConectado;
     }
 
     /**
      * Método que implementa el comportamiento del hilo
+     * En este se recogera un Objeto via sockets TCP/IP
+     * Y según su eleccion se procedera en su caso
      */
     @Override
     public void run() {
@@ -69,9 +72,11 @@ public class SesionServidor extends Thread {
             System.out.println(et.getMessage());
         }
 
+        //Creación de Objeto DrinkGamesAd
         DrinkgamesAD dg = null;
         int reg = 0;
         try {
+            //Instanci de Objeto DrinkGamesAd
             dg = new DrinkgamesAD("192.168.1.12");
             //dg.setIp();
         } catch (ExcepcionDG ex) {
@@ -79,8 +84,10 @@ public class SesionServidor extends Thread {
         }
 
         try {
+            //Switch Eleccion de metodo modificacion de los registros de la base de datos
             switch (ele) {
 
+                //Caso Insertar Usuario y Frases
                 case 1:
 
                     reg = dg.insertarUsuario(usuario);
@@ -111,6 +118,7 @@ public class SesionServidor extends Thread {
 
                     break;
 
+                //Caso Modificar Usuario y Frases
                 case 2:
 
                     reg = dg.modificarUsuario(usuario);
@@ -124,6 +132,7 @@ public class SesionServidor extends Thread {
 
                     break;
 
+                //Caso Eliminar Usuario y Frases
                 case 3:
 
                     usuario = dg.selectId(usuario.getCorreo());
@@ -132,6 +141,7 @@ public class SesionServidor extends Thread {
                     System.out.println("Servidor.Consola - Objeto recibido del Cliente a Borrar: " + reg);
                     break;
                     
+                //Caso Seleccionar Usuario y Frases    
                 case 4:
 
                     usuario = dg.selectId(usuario.getCorreo());
@@ -174,6 +184,5 @@ public class SesionServidor extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(SesionServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 }
